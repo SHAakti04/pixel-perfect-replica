@@ -23,11 +23,11 @@ export function HeroSceneThree() {
 
       root.current!.querySelectorAll<SVGCircleElement>("[data-ring]").forEach((el) => {
         const c = 2 * Math.PI * 16;
-        tl.fromTo(el, { strokeDashoffset: c }, { strokeDashoffset: c * (1 - Number(el.dataset.pct) / 100), duration: 1.4, ease: "power2.out" }, 1.0);
+        tl.fromTo(el, { strokeDashoffset: c }, { strokeDashoffset: c * (1 - Number(el.dataset["pct"]) / 100), duration: 1.4, ease: "power2.out" }, 1.0);
       });
       root.current!.querySelectorAll<HTMLElement>("[data-count]").forEach((el) => {
-        const end = Number(el.dataset.count);
-        const dec = Number(el.dataset.dec);
+        const end = Number(el.dataset["count"]);
+        const dec = Number(el.dataset["dec"]);
         const o = { v: 0 };
         tl.to(o, { v: end, duration: 1.6, ease: "power2.out", onUpdate: () => { el.textContent = o.v.toFixed(dec); } }, 0.7);
       });
