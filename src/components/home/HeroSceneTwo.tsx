@@ -14,7 +14,7 @@ export function HeroSceneTwo() {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" }, scrollTrigger: { trigger: root.current, start: "top 65%", once: true } });
       tl.from("[data-s2-text] > *", { y: 40, opacity: 0, duration: 0.9, stagger: 0.12 })
         .from("[data-hub]", { rotateY: -70, rotateX: 25, scale: 0.6, opacity: 0, duration: 1.3, ease: "expo.out" }, 0.1)
-        .from("[data-node]", { scale: 0.6, opacity: 0, duration: 0.7, stagger: 0.15, ease: "back.out(1.4)" }, 0.5)
+        .fromTo("[data-node]", { scale: 0.6, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.7, stagger: 0.15, ease: "back.out(1.4)", immediateRender: false }, 0.5)
         .fromTo("[data-path]", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.2, stagger: 0.15, ease: "power2.inOut" }, 0.6)
         .from("[data-particle]", { opacity: 0, duration: 0.4 }, 1.6)
         .from('[data-float="record"]', { x: -60, opacity: 0, duration: 0.9 }, 1.4)

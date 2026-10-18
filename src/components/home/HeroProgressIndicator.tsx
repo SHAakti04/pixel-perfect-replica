@@ -19,9 +19,9 @@ export function HeroProgressIndicator() {
   }, []);
 
   return (
-    <nav aria-label="Hero scenes" className="fixed right-6 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-5 xl:flex">
+    <nav aria-label="Hero scenes" className="fixed left-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-5 min-[1600px]:flex">
       {SCENES.map((s, i) => (
-        <a key={s.id} href={`#${s.id}`} aria-current={active === i ? "step" : undefined} className="group flex items-center justify-end gap-3">
+        <a key={s.id} href={`#${s.id}`} aria-current={active === i ? "step" : undefined} className="group flex items-center gap-3 flex-row-reverse justify-end">
           <span className={`text-[11px] font-semibold tracking-[0.2em] uppercase transition-all ${active === i ? "text-cyan opacity-100" : "opacity-0 group-hover:opacity-70"}`}>
             {s.label}
           </span>

@@ -31,7 +31,7 @@ export function ConnectedEcosystem({ active, onActive }: { active: string; onAct
           </defs>
           {PATHS.map((d, i) => (
             <g key={i}>
-              <path data-path d={d} fill="none" stroke="url(#lg)" strokeWidth={CAPABILITIES[i].key === active ? 0.6 : 0.35} strokeLinecap="round" opacity={CAPABILITIES[i].key === active ? 1 : 0.55} pathLength={1} />
+              <path data-path d={d} fill="none" stroke="url(#lg)" strokeWidth={CAPABILITIES[i]!.key === active ? 0.6 : 0.35} strokeLinecap="round" opacity={CAPABILITIES[i]!.key === active ? 1 : 0.55} pathLength={1} />
               <circle data-particle r="0.9" fill="var(--cyan)">
                 <animateMotion dur={`${3 + i * 0.6}s`} repeatCount="indefinite" path={d} keyPoints="1;0" keyTimes="0;1" calcMode="linear" />
               </circle>
@@ -53,26 +53,25 @@ export function ConnectedEcosystem({ active, onActive }: { active: string; onAct
           const Icon = c.icon;
           const on = c.key === active;
           return (
+            <div key={c.key} style={{ left: `${c.pos.x}%`, top: `${c.pos.y}%` }} data-node className="absolute -translate-x-1/2 -translate-y-1/2">
             <button
-              key={c.key}
-              data-node
               onMouseEnter={() => onActive(c.key)}
               onFocus={() => onActive(c.key)}
               onClick={() => onActive(c.key)}
               aria-pressed={on}
-              style={{ left: `${c.pos.x}%`, top: `${c.pos.y}%` }}
-              className={`absolute flex -translate-x-1/2 -translate-y-1/2 items-center gap-2.5 rounded-xl px-3.5 py-2.5 glass-panel transition-all duration-500 [transform:translateZ(30px)] ${on ? "glow-electric border-cyan/60" : ""}`}
+              className={`flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 glass-panel transition-all duration-500 [transform:translateZ(30px)] ${on ? "glow-electric border-cyan/60" : ""}`}
             >
               <span className={`grid size-9 place-items-center rounded-lg transition-colors ${on ? "bg-primary" : "bg-panel"}`}>
                 <Icon className="size-4.5" aria-hidden />
               </span>
               <span className="text-left text-sm font-semibold whitespace-nowrap">{c.name}</span>
             </button>
+            </div>
           );
         })}
 
         {/* Customer record */}
-        <div data-float="record" className="absolute left-[24%] top-[30%] hidden w-48 rounded-lg bg-surface-light p-3 text-surface-light-foreground shadow-2xl md:block [transform:translateZ(90px)]">
+        <div data-float="record" className="absolute left-[4%] top-[38%] hidden w-48 rounded-lg bg-surface-light p-3 text-surface-light-foreground shadow-2xl md:block [transform:translateZ(90px)]">
           <p className="text-[9px] font-semibold tracking-wider text-muted-foreground uppercase">Account · Shared record</p>
           <p className="mt-1 text-sm font-bold">Northwind Logistics</p>
           <div className="mt-2 flex items-center justify-between text-[10px]">
