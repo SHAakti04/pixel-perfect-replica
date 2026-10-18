@@ -71,7 +71,7 @@ export function ConnectedEcosystem({ active, onActive }: { active: string; onAct
         })}
 
         {/* Customer record */}
-        <div data-float="record" className="absolute left-[24%] top-[30%] hidden w-48 rounded-lg bg-surface-light p-3 text-surface-light-foreground shadow-2xl md:block [transform:translateZ(90px)]">
+        <div data-float="record" className="absolute left-[4%] top-[38%] hidden w-48 rounded-lg bg-surface-light p-3 text-surface-light-foreground shadow-2xl md:block [transform:translateZ(90px)]">
           <p className="text-[9px] font-semibold tracking-wider text-muted-foreground uppercase">Account · Shared record</p>
           <p className="mt-1 text-sm font-bold">Northwind Logistics</p>
           <div className="mt-2 flex items-center justify-between text-[10px]">
