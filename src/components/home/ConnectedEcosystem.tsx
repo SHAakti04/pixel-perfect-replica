@@ -53,21 +53,21 @@ export function ConnectedEcosystem({ active, onActive }: { active: string; onAct
           const Icon = c.icon;
           const on = c.key === active;
           return (
+            <div key={c.key} style={{ left: `${c.pos.x}%`, top: `${c.pos.y}%` }} className="absolute -translate-x-1/2 -translate-y-1/2">
             <button
-              key={c.key}
               data-node
               onMouseEnter={() => onActive(c.key)}
               onFocus={() => onActive(c.key)}
               onClick={() => onActive(c.key)}
               aria-pressed={on}
-              style={{ left: `${c.pos.x}%`, top: `${c.pos.y}%` }}
-              className={`absolute flex -translate-x-1/2 -translate-y-1/2 items-center gap-2.5 rounded-xl px-3.5 py-2.5 glass-panel transition-all duration-500 [transform:translateZ(30px)] ${on ? "glow-electric border-cyan/60" : ""}`}
+              className={`flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 glass-panel transition-all duration-500 [transform:translateZ(30px)] ${on ? "glow-electric border-cyan/60" : ""}`}
             >
               <span className={`grid size-9 place-items-center rounded-lg transition-colors ${on ? "bg-primary" : "bg-panel"}`}>
                 <Icon className="size-4.5" aria-hidden />
               </span>
               <span className="text-left text-sm font-semibold whitespace-nowrap">{c.name}</span>
             </button>
+            </div>
           );
         })}
 

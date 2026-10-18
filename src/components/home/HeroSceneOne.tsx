@@ -59,7 +59,7 @@ export function HeroSceneOne() {
           <p data-eyebrow className="mb-6 text-xs font-semibold tracking-[0.18em] text-cyan uppercase md:text-sm">
             Salesforce Consulting &amp; Implementation Partner
           </p>
-          <h1 className="font-display text-[clamp(2.4rem,5.2vw,4.6rem)] leading-[1.06] font-bold tracking-tight">
+          <h1 className="font-display text-[clamp(2.3rem,4.6vw,4.4rem)] leading-[1.06] font-bold tracking-tight">
             <span data-line className="block overflow-hidden pb-1"><span className="block">Turn Your Business</span></span>
             <span data-line className="block overflow-hidden pb-1"><span className="block">Vision into Real Results</span></span>
             <span data-line className="block overflow-hidden pb-1">

@@ -51,7 +51,7 @@ export function HeroSceneThree() {
           </p>
           <CTAButtons className="mt-10" />
         </div>
-        <div className="lg:-mr-24">
+        <div className="xl:-mr-6">
           <AnalyticsDashboard />
           <p className="mt-3 text-right text-[11px] text-muted-foreground">Illustrative demo data only.</p>
         </div>
