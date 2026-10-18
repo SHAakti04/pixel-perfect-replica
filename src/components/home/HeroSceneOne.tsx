@@ -3,57 +3,54 @@ import office from "@/assets/image.png.asset.json";
 import { CTAButtons } from "./CTAButtons";
 import { getGsap, prefersReducedMotion } from "@/lib/motion";
 
-export function HeroSceneOne() {
-  const root = useRef<HTMLElement>(null);
+export function HeroSceneOne({ active }: { active: boolean }) {
+  const root = useRef<HTMLDivElement>(null);
   const imgWrap = useRef<HTMLDivElement>(null);
 
+  // Entrance animation replays each time the slide becomes active
   useEffect(() => {
-    if (!root.current) return;
+    if (!active || !root.current || prefersReducedMotion()) return;
     const { gsap } = getGsap();
-    const reduce = prefersReducedMotion();
     const ctx = gsap.context(() => {
-      if (reduce) return;
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.from("[data-sweep]", { xPercent: -100, opacity: 0, duration: 1.6, ease: "power2.inOut" })
-        .fromTo("[data-mask]", { clipPath: "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)" }, { clipPath: "polygon(14% 0, 100% 0, 100% 100%, 0% 100%)", duration: 1.5, ease: "expo.inOut" }, 0.2)
-        .from("[data-photo]", { scale: 1.18, duration: 2.2, ease: "power2.out" }, 0.3)
-        .from("[data-eyebrow]", { y: 14, opacity: 0, duration: 0.7 }, 0.6)
-        .from("[data-line] > span", { yPercent: 110, duration: 1, stagger: 0.12 }, 0.7)
-        .to("[data-shine]", { backgroundPosition: "0% 0", duration: 1.4, ease: "power2.inOut" }, 1.4)
-        .from("[data-copy]", { clipPath: "inset(0 0 100% 0)", y: 12, duration: 0.9 }, 1.2)
-        .from("[data-cta]", { y: 24, opacity: 0, duration: 0.7, stagger: 0.1 }, 1.4)
-        .from("[data-shard]", { xPercent: 40, opacity: 0, duration: 1.4, stagger: 0.15 }, 1.0);
-
-      gsap.to("[data-photo]", { yPercent: 8, ease: "none", scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true } });
-      gsap.to("[data-shard]", { yPercent: -30, ease: "none", scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true } });
-      gsap.to("[data-text]", { y: -60, opacity: 0.3, ease: "none", scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true } });
+      tl.fromTo("[data-mask]", { clipPath: "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)" }, { clipPath: "polygon(14% 0, 100% 0, 100% 100%, 0% 100%)", duration: 1.4, ease: "expo.inOut" }, 0.25)
+        .fromTo("[data-photo]", { scale: 1.18 }, { scale: 1, duration: 2, ease: "power2.out" }, 0.35)
+        .fromTo("[data-eyebrow]", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 0.55)
+        .fromTo("[data-line] > span", { yPercent: 110 }, { yPercent: 0, duration: 1, stagger: 0.12 }, 0.65)
+        .fromTo("[data-shine]", { backgroundPosition: "100% 0" }, { backgroundPosition: "0% 0", duration: 1.4, ease: "power2.inOut" }, 1.3)
+        .fromTo("[data-copy]", { clipPath: "inset(0 0 100% 0)", y: 12 }, { clipPath: "inset(0 0 0% 0)", y: 0, duration: 0.9 }, 1.1)
+        .fromTo("[data-cta]", { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, stagger: 0.1 }, 1.3)
+        .fromTo("[data-shard]", { xPercent: 40, opacity: 0 }, { xPercent: 0, opacity: 1, duration: 1.4, stagger: 0.15 }, 0.9);
     }, root);
+    return () => ctx.revert();
+  }, [active]);
 
+  // Pointer tilt on the photo
+  useEffect(() => {
+    if (!root.current || prefersReducedMotion()) return;
+    const { gsap } = getGsap();
     const el = imgWrap.current;
     const fine = window.matchMedia("(pointer: fine) and (min-width: 1024px)").matches;
+    if (!fine || !el) return;
     const onMove = (e: PointerEvent) => {
-      if (!el) return;
       const r = el.getBoundingClientRect();
       const x = (e.clientX - r.left) / r.width - 0.5;
       const y = (e.clientY - r.top) / r.height - 0.5;
       gsap.to(el, { rotateY: x * 5, rotateX: -y * 4, duration: 1, ease: "power2.out" });
     };
     const onLeave = () => gsap.to(el, { rotateX: 0, rotateY: 0, duration: 1.2 });
-    if (fine && !reduce && el) {
-      root.current.addEventListener("pointermove", onMove);
-      root.current.addEventListener("pointerleave", onLeave);
-    }
     const r = root.current;
+    r.addEventListener("pointermove", onMove);
+    r.addEventListener("pointerleave", onLeave);
     return () => {
       r.removeEventListener("pointermove", onMove);
       r.removeEventListener("pointerleave", onLeave);
-      ctx.revert();
     };
   }, []);
 
   return (
-    <section ref={root} id="vision" className="scene-bg relative flex min-h-[100svh] items-center overflow-hidden pt-24 pb-12 lg:py-0">
-      <div data-sweep className="pointer-events-none absolute inset-y-0 left-0 w-2/3 bg-gradient-to-r from-transparent via-electric/10 to-transparent" aria-hidden />
+    <div ref={root} className="flex h-full items-center pt-20 pb-24 lg:py-16">
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-2/3 bg-gradient-to-r from-transparent via-electric/10 to-transparent" aria-hidden />
       <div className="mx-auto grid w-full max-w-[1400px] items-center gap-12 px-5 md:px-10 lg:grid-cols-[1.05fr_1fr] lg:gap-6">
         <div data-text className="relative z-10">
           <p data-eyebrow className="mb-6 text-xs font-semibold tracking-[0.18em] text-cyan uppercase md:text-sm">
@@ -72,8 +69,8 @@ export function HeroSceneOne() {
           <CTAButtons className="mt-10" />
         </div>
 
-        <div className="relative [perspective:1400px] lg:-mr-10 lg:h-[82vh]">
-          <div ref={imgWrap} className="relative h-[52vh] w-full [transform-style:preserve-3d] lg:h-full">
+        <div className="relative [perspective:1400px] lg:-mr-10 lg:h-[72vh]">
+          <div ref={imgWrap} className="relative h-[38vh] w-full [transform-style:preserve-3d] lg:h-full">
             <div data-mask className="absolute inset-0 overflow-hidden [clip-path:polygon(14%_0,100%_0,100%_100%,0%_100%)]">
               <img data-photo src={office.url} alt="Business leaders collaborating around a conference table in a high-rise office overlooking a city skyline" className="h-full w-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-navy/20" />
@@ -83,6 +80,6 @@ export function HeroSceneOne() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
