@@ -31,7 +31,7 @@ export function ConnectedEcosystem({ active, onActive }: { active: string; onAct
           </defs>
           {PATHS.map((d, i) => (
             <g key={i}>
-              <path data-path d={d} fill="none" stroke="url(#lg)" strokeWidth={CAPABILITIES[i].key === active ? 0.6 : 0.35} strokeLinecap="round" opacity={CAPABILITIES[i].key === active ? 1 : 0.55} pathLength={1} />
+              <path data-path d={d} fill="none" stroke="url(#lg)" strokeWidth={CAPABILITIES[i]!.key === active ? 0.6 : 0.35} strokeLinecap="round" opacity={CAPABILITIES[i]!.key === active ? 1 : 0.55} pathLength={1} />
               <circle data-particle r="0.9" fill="var(--cyan)">
                 <animateMotion dur={`${3 + i * 0.6}s`} repeatCount="indefinite" path={d} keyPoints="1;0" keyTimes="0;1" calcMode="linear" />
               </circle>
@@ -53,9 +53,8 @@ export function ConnectedEcosystem({ active, onActive }: { active: string; onAct
           const Icon = c.icon;
           const on = c.key === active;
           return (
-            <div key={c.key} style={{ left: `${c.pos.x}%`, top: `${c.pos.y}%` }} className="absolute -translate-x-1/2 -translate-y-1/2">
+            <div key={c.key} style={{ left: `${c.pos.x}%`, top: `${c.pos.y}%` }} data-node className="absolute -translate-x-1/2 -translate-y-1/2">
             <button
-              data-node
               onMouseEnter={() => onActive(c.key)}
               onFocus={() => onActive(c.key)}
               onClick={() => onActive(c.key)}
