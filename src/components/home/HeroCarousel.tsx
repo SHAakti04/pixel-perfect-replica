@@ -43,12 +43,18 @@ export function HeroCarousel() {
     }
 
     animating.current = true;
+    // Kill any in-flight transition and hide every slide except the two involved
+    slideRefs.current.forEach((el, i) => {
+      if (!el) return;
+      gsap.killTweensOf(el);
+      if (i !== from && i !== idx) gsap.set(el, { autoAlpha: 0, zIndex: 0 });
+    });
     gsap.set(inEl, { autoAlpha: 1, zIndex: 2 });
     gsap.set(outEl, { zIndex: 1 });
     const tl = gsap.timeline({
       defaults: { ease: "power3.inOut" },
       onComplete: () => {
-        gsap.set(outEl, { autoAlpha: 0, zIndex: 0 });
+        gsap.set(outEl, { autoAlpha: 0, zIndex: 0, xPercent: 0, rotateY: 0, z: 0 });
         animating.current = false;
       },
     });
@@ -102,7 +108,7 @@ export function HeroCarousel() {
             aria-roledescription="slide"
             aria-label={`${i + 1} of ${SLIDES.length}: ${s.label}`}
             aria-hidden={active !== i}
-            className="absolute inset-0 overflow-hidden [transform-style:preserve-3d]"
+            className="scene-bg absolute inset-0 overflow-hidden [transform-style:preserve-3d]"
             style={{ pointerEvents: active === i ? "auto" : "none" }}
           >
             {i === 0 && <HeroSceneOne active={active === 0} />}
