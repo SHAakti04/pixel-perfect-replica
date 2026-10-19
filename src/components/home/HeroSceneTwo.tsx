@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { CTAButtons } from "./CTAButtons";
-import { CAPABILITIES, ConnectedEcosystem } from "./ConnectedEcosystem";
+import { CAPABILITIES, ConnectedEcosystem, MASCOT, SALESFORCE_LOGO } from "./ConnectedEcosystem";
 import { getGsap, prefersReducedMotion } from "@/lib/motion";
 
 export function HeroSceneTwo({ active }: { active: boolean }) {
@@ -43,24 +43,24 @@ export function HeroSceneTwo({ active }: { active: boolean }) {
           <ConnectedEcosystem active={activeCap} onActive={setActiveCap} />
         </div>
 
-        {/* Mobile connected stack */}
-        <ol className="relative space-y-3 border-l border-electric/40 pl-6 md:hidden">
-          {CAPABILITIES.map((c) => {
-            const Icon = c.icon;
-            return (
-              <li key={c.key} className="relative rounded-xl glass-panel p-4">
-                <span className="absolute -left-[31px] top-5 size-3 rounded-full bg-cyan glow-electric" aria-hidden />
-                <div className="flex items-center gap-3">
-                  <span className="grid size-9 place-items-center rounded-lg bg-primary"><Icon className="size-4.5" aria-hidden /></span>
-                  <div>
-                    <p className="text-[11px] tracking-wider text-cyan uppercase">{c.name}</p>
-                    <p className="font-semibold">{c.title}</p>
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-        </ol>
+        {/* Mobile connected view */}
+        <div className="md:hidden">
+          <div className="relative mx-auto mb-4 grid size-40 place-items-center">
+            <div className="absolute inset-0 rounded-full glass-panel glow-electric" />
+            <div className="absolute inset-0 overflow-hidden rounded-full">
+              <img src={MASCOT} alt="Our mascot" className="mascot-float absolute bottom-0 left-1/2 w-[96%] -translate-x-1/2" />
+            </div>
+            <img src={SALESFORCE_LOGO} alt="Salesforce" className="absolute -bottom-2 h-7 w-auto rounded-full bg-navy/90 px-2 py-1" />
+          </div>
+          <div className="grid grid-cols-4 gap-2">
+            {CAPABILITIES.map((c) => (
+              <div key={c.key} className="flex flex-col items-center gap-1.5">
+                <span className="grid size-14 place-items-center rounded-xl bg-surface-light p-2 shadow-xl"><img src={c.logo} alt="" className="h-full w-full object-contain" /></span>
+                <span className="text-center text-[10px] font-semibold leading-tight">{c.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
