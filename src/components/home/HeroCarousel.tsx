@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { HeroSceneOne } from "./HeroSceneOne";
 import { HeroSceneTwo } from "./HeroSceneTwo";
@@ -13,81 +13,45 @@ const SLIDES = [
 
 const AUTOPLAY_MS = 7000;
 
+function slideStyle(i: number, active: number): React.CSSProperties {
+  if (i === active) {
+    return { transform: "translateX(0%) rotateY(0deg)", opacity: 1, visibility: "visible", zIndex: 2 };
+  }
+  const side = i < active ? -1 : 1;
+  return {
+    transform: `translateX(${side * 42}%) rotateY(${side * -24}deg)`,
+    opacity: 0,
+    visibility: "hidden",
+    zIndex: 0,
+  };
+}
+
 export function HeroCarousel() {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
-  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const progressRef = useRef<HTMLDivElement>(null);
-  const timerRef = useRef<number | null>(null);
-  const animating = useRef(false);
+  const progressRef = useRef<HTMLSpanElement>(null);
   const activeRef = useRef(0);
   activeRef.current = active;
+  const reduce = useRef(false);
 
-  const goTo = useCallback((next: number, dir: 1 | -1 = 1) => {
-    const from = activeRef.current;
-    const idx = (next + SLIDES.length) % SLIDES.length;
-    if (idx === from || animating.current) return;
-
-    const outEl = slideRefs.current[from];
-    const inEl = slideRefs.current[idx];
-    const { gsap } = getGsap();
-    const reduce = prefersReducedMotion();
-
-    setActive(idx);
-
-    if (reduce || !outEl || !inEl) {
-      slideRefs.current.forEach((el, i) => {
-        if (el) gsap.set(el, { autoAlpha: i === idx ? 1 : 0, xPercent: 0, rotateY: 0, z: 0 });
-      });
-      return;
-    }
-
-    animating.current = true;
-    // Kill any in-flight transition and hide every slide except the two involved
-    slideRefs.current.forEach((el, i) => {
-      if (!el) return;
-      gsap.killTweensOf(el);
-      if (i !== from && i !== idx) gsap.set(el, { autoAlpha: 0, zIndex: 0 });
-    });
-    gsap.set(inEl, { autoAlpha: 1, zIndex: 2 });
-    gsap.set(outEl, { zIndex: 1 });
-    const tl = gsap.timeline({
-      defaults: { ease: "power3.inOut" },
-      onComplete: () => {
-        gsap.set(outEl, { autoAlpha: 0, zIndex: 0, xPercent: 0, rotateY: 0, z: 0 });
-        animating.current = false;
-      },
-    });
-    tl.to(outEl, { xPercent: -38 * dir, rotateY: 22 * dir, z: -260, autoAlpha: 0, duration: 1.05 }, 0).fromTo(
-      inEl,
-      { xPercent: 42 * dir, rotateY: -26 * dir, z: -320, autoAlpha: 0 },
-      { xPercent: 0, rotateY: 0, z: 0, autoAlpha: 1, duration: 1.05 },
-      0.12,
-    );
+  useEffect(() => {
+    reduce.current = prefersReducedMotion();
   }, []);
 
   // Autoplay with progress bar
   useEffect(() => {
-    if (paused || prefersReducedMotion()) return;
+    if (paused || reduce.current) return;
     const { gsap } = getGsap();
     const bar = progressRef.current;
     if (bar) gsap.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: AUTOPLAY_MS / 1000, ease: "none" });
-    timerRef.current = window.setTimeout(() => goTo(activeRef.current + 1, 1), AUTOPLAY_MS);
+    const t = window.setTimeout(() => setActive((a) => (a + 1) % SLIDES.length), AUTOPLAY_MS);
     return () => {
-      if (timerRef.current) window.clearTimeout(timerRef.current);
+      window.clearTimeout(t);
       if (bar) gsap.killTweensOf(bar);
     };
-  }, [active, paused, goTo]);
+  }, [active, paused]);
 
-  // Initial state: only first slide visible
-  useEffect(() => {
-    const { gsap } = getGsap();
-    slideRefs.current.forEach((el, i) => {
-      if (el) gsap.set(el, { autoAlpha: i === 0 ? 1 : 0, zIndex: i === 0 ? 2 : 0 });
-    });
-  }, []);
-
-  const jump = (i: number) => goTo(i, i > activeRef.current ? 1 : -1);
+  const goTo = (i: number) => setActive(((i % SLIDES.length) + SLIDES.length) % SLIDES.length);
 
   return (
     <section
@@ -101,15 +65,15 @@ export function HeroCarousel() {
         {SLIDES.map((s, i) => (
           <div
             key={s.id}
-            ref={(el) => {
-              slideRefs.current[i] = el;
-            }}
             role="group"
             aria-roledescription="slide"
             aria-label={`${i + 1} of ${SLIDES.length}: ${s.label}`}
             aria-hidden={active !== i}
-            className="scene-bg absolute inset-0 overflow-hidden [transform-style:preserve-3d]"
-            style={{ pointerEvents: active === i ? "auto" : "none" }}
+            className="scene-bg absolute inset-0 overflow-hidden transition-[transform,opacity,visibility] duration-1000 ease-[cubic-bezier(0.65,0,0.35,1)] will-change-transform motion-reduce:transition-none"
+            style={{
+              ...slideStyle(i, active),
+              pointerEvents: active === i ? "auto" : "none",
+            }}
           >
             {i === 0 && <HeroSceneOne active={active === 0} />}
             {i === 1 && <HeroSceneTwo active={active === 1} />}
@@ -121,9 +85,9 @@ export function HeroCarousel() {
       {/* Controls */}
       <div className="absolute inset-x-0 bottom-6 z-20 flex items-center justify-center gap-5 px-5 md:bottom-9">
         <button
-          onClick={() => goTo(activeRef.current - 1, -1)}
+          onClick={() => goTo(activeRef.current - 1)}
           aria-label="Previous slide"
-          className="grid size-11 place-items-center rounded-full border border-foreground/25 bg-panel/50 backdrop-blur-md transition-all duration-300 hover:border-cyan/70 hover:glow-electric"
+          className="grid size-11 shrink-0 place-items-center rounded-full border border-foreground/25 bg-panel/50 backdrop-blur-md transition-all duration-300 hover:border-cyan/70 hover:glow-electric"
         >
           <ChevronLeft className="size-5" aria-hidden />
         </button>
@@ -132,7 +96,7 @@ export function HeroCarousel() {
           {SLIDES.map((s, i) => (
             <button
               key={s.id}
-              onClick={() => jump(i)}
+              onClick={() => goTo(i)}
               aria-label={`Go to slide ${i + 1}: ${s.label}`}
               aria-current={active === i ? "true" : undefined}
               className="group flex items-center gap-2.5"
@@ -157,9 +121,9 @@ export function HeroCarousel() {
         </div>
 
         <button
-          onClick={() => goTo(activeRef.current + 1, 1)}
+          onClick={() => goTo(activeRef.current + 1)}
           aria-label="Next slide"
-          className="grid size-11 place-items-center rounded-full border border-foreground/25 bg-panel/50 backdrop-blur-md transition-all duration-300 hover:border-cyan/70 hover:glow-electric"
+          className="grid size-11 shrink-0 place-items-center rounded-full border border-foreground/25 bg-panel/50 backdrop-blur-md transition-all duration-300 hover:border-cyan/70 hover:glow-electric"
         >
           <ChevronRight className="size-5" aria-hidden />
         </button>
