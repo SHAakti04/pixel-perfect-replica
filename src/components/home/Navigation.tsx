@@ -20,7 +20,7 @@ export function Navigation() {
       }`}
     >
       <nav className="mx-auto flex h-18 max-w-[1400px] items-center justify-between px-5 py-4 md:px-10" aria-label="Main">
-        <a href="#vision" className="flex items-center gap-2 text-lg font-bold tracking-tight">
+        <a href="#services" className="flex items-center gap-2 text-lg font-bold tracking-tight">
           <span className="grid size-8 place-items-center rounded-md bg-primary">
             <Cloud className="size-4.5 text-primary-foreground" aria-hidden />
           </span>
