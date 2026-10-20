@@ -55,8 +55,7 @@ export function HeroSceneTwo({ active }: { active: boolean }) {
           <div className="grid grid-cols-4 gap-2">
             {CAPABILITIES.map((c) => (
               <div key={c.key} className="flex flex-col items-center gap-1.5">
-                <span className="grid size-11 place-items-center rounded-xl bg-surface-light p-2 shadow-xl"><img src={c.logo} alt="" className="h-full w-full object-contain" /></span>
-                <span className="text-center text-[10px] font-semibold leading-tight">{c.name}</span>
+                <span className="grid size-11 place-items-center rounded-xl bg-surface-light p-2 shadow-xl"><img src={c.logo} alt={c.name} className="h-full w-full object-contain" /></span>
               </div>
             ))}
           </div>
