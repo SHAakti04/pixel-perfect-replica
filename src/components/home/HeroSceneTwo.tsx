@@ -45,18 +45,17 @@ export function HeroSceneTwo({ active }: { active: boolean }) {
 
         {/* Mobile connected view */}
         <div className="md:hidden">
-          <div className="relative mx-auto mb-4 grid size-40 place-items-center">
+          <div className="relative mx-auto mb-3 grid size-28 place-items-center">
             <div className="absolute inset-0 rounded-full glass-panel glow-electric" />
             <div className="absolute inset-0 overflow-hidden rounded-full">
-              <img src={MASCOT} alt="Our mascot" className="mascot-float absolute bottom-0 left-1/2 w-[96%] -translate-x-1/2" />
+              <img src={MASCOT} alt="Our mascot" className="mascot-float absolute inset-x-0 bottom-0 mx-auto w-[92%]" />
             </div>
             <img src={SALESFORCE_LOGO} alt="Salesforce" className="absolute -bottom-2 h-7 w-auto rounded-full bg-navy/90 px-2 py-1" />
           </div>
           <div className="grid grid-cols-4 gap-2">
             {CAPABILITIES.map((c) => (
               <div key={c.key} className="flex flex-col items-center gap-1.5">
-                <span className="grid size-14 place-items-center rounded-xl bg-surface-light p-2 shadow-xl"><img src={c.logo} alt="" className="h-full w-full object-contain" /></span>
-                <span className="text-center text-[10px] font-semibold leading-tight">{c.name}</span>
+                <span className="grid size-11 place-items-center rounded-xl bg-surface-light p-2 shadow-xl"><img src={c.logo} alt={c.name} className="h-full w-full object-contain" /></span>
               </div>
             ))}
           </div>

@@ -66,7 +66,7 @@ export function ConnectedEcosystem({ active, onActive }: { active: string; onAct
           <div className="relative aspect-square">
             <div className="absolute inset-[6%] rounded-full glass-panel glow-electric" />
             <div className="absolute inset-[6%] overflow-hidden rounded-full">
-              <img src={mascot} alt="Our mascot, the connected-platform rhino" className="mascot-float absolute bottom-0 left-1/2 w-[96%] -translate-x-1/2" loading="lazy" />
+              <img src={mascot} alt="Our mascot, the connected-platform rhino" className="mascot-float absolute inset-x-0 bottom-0 mx-auto w-[92%]" loading="lazy" />
             </div>
             <div className="absolute -bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full border border-electric/40 bg-navy/90 py-1.5 pr-3.5 pl-2 shadow-xl backdrop-blur-md">
               <img src={salesforceLogo.url} alt="Salesforce" className="h-5 w-auto" />
