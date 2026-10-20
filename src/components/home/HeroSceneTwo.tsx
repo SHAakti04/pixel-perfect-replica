@@ -48,7 +48,7 @@ export function HeroSceneTwo({ active }: { active: boolean }) {
           <div className="relative mx-auto mb-3 grid size-28 place-items-center">
             <div className="absolute inset-0 rounded-full glass-panel glow-electric" />
             <div className="absolute inset-0 overflow-hidden rounded-full">
-              <img src={MASCOT} alt="Our mascot" className="mascot-float absolute bottom-0 left-1/2 w-[96%] -translate-x-1/2" />
+              <img src={MASCOT} alt="Our mascot" className="mascot-float absolute inset-x-0 bottom-0 mx-auto w-[92%]" />
             </div>
             <img src={SALESFORCE_LOGO} alt="Salesforce" className="absolute -bottom-2 h-7 w-auto rounded-full bg-navy/90 px-2 py-1" />
           </div>
