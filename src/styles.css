@@ -148,3 +148,14 @@
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+
+:root {
+  --violet: oklch(0.6 0.2 295);
+  --rose: oklch(0.63 0.22 10);
+  --amber: oklch(0.76 0.16 65);
+}
+@theme inline {
+  --color-violet: var(--violet);
+  --color-rose: var(--rose);
+  --color-amber: var(--amber);
+}
