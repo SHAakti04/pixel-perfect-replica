@@ -42,7 +42,7 @@ export function HeroSceneTwo({ active }: { active: boolean }) {
       </div>
 
       {/* Mobile: compact mascot hub + mini app cards */}
-      <div className="mx-auto mt-5 w-full max-w-md flex-1 overflow-hidden px-5 md:hidden">
+      <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center overflow-hidden px-5 md:hidden">
         <ConnectedBoardMobile />
       </div>
     </div>
