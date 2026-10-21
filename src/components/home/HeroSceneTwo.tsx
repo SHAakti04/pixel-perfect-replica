@@ -24,26 +24,28 @@ export function HeroSceneTwo({ active }: { active: boolean }) {
   }, [active]);
 
   return (
-    <div ref={root} className="flex h-full flex-col pt-20 pb-20 md:pt-24 md:pb-24">
-      {/* Compact header */}
-      <div data-s2-text className="mx-auto flex w-full max-w-[1400px] flex-wrap items-end justify-between gap-x-10 gap-y-4 px-5 md:px-10">
-        <div className="min-w-0">
-          <p className="mb-2 text-[11px] font-semibold tracking-[0.18em] text-cyan uppercase md:text-xs">Connected Experience. One Business View.</p>
-          <h2 className="font-display text-[clamp(1.5rem,3vw,2.6rem)] leading-[1.1] font-bold tracking-tight">
+    <div ref={root} className="flex h-full items-center pt-20 pb-24 lg:py-16">
+      <div className="mx-auto grid w-full max-w-[1400px] items-center gap-14 px-5 md:px-10 lg:grid-cols-[0.85fr_1.15fr]">
+        <div data-s2-text>
+          <p className="mb-6 text-xs font-semibold tracking-[0.18em] text-cyan uppercase md:text-sm">Connected Experience. One Business View.</p>
+          <h2 className="font-display text-[clamp(2.2rem,4.8vw,4.2rem)] leading-[1.08] font-bold tracking-tight">
             Connect Every Team. <span className="text-electric">Unify</span> Every Customer Interaction.
           </h2>
+          <p className="mt-7 max-w-xl text-base leading-relaxed text-foreground/80 md:text-lg">
+            Bring Sales Cloud, Service Cloud, Slack and Tableau together into one connected experience — a shared view of customers, conversations and performance.
+          </p>
+          <CTAButtons className="mt-10" />
         </div>
-        <CTAButtons className="hidden shrink-0 lg:flex" />
-      </div>
 
-      {/* Desktop board — always fits the remaining screen space */}
-      <div className="mx-auto mt-4 hidden w-full max-w-[1400px] flex-1 px-5 md:mt-6 md:block md:px-10">
-        <ConnectedBoard />
-      </div>
+        {/* Desktop board — scales to fit the column */}
+        <div className="hidden h-[52vh] min-h-0 md:block lg:h-[68vh] xl:-mr-6">
+          <ConnectedBoard />
+        </div>
 
-      {/* Mobile: compact mascot hub + mini app cards */}
-      <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center overflow-hidden px-5 md:hidden">
-        <ConnectedBoardMobile />
+        {/* Mobile: compact mascot hub + mini app cards */}
+        <div className="md:hidden">
+          <ConnectedBoardMobile />
+        </div>
       </div>
     </div>
   );
